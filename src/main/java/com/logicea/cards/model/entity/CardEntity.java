@@ -8,7 +8,6 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @EntityListeners(AuditingEntityListener.class)
 @Entity
@@ -17,9 +16,8 @@ import java.util.UUID;
 public class CardEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(length = 36)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(length = 50, nullable = false)
     private String name;
