@@ -16,8 +16,6 @@ public class CardRequestDto {
 
     private String description;
 
-    private Long userId;
-
     private CardStatus status = CardStatus.TODO;
 
 }

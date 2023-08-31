@@ -1,8 +1,10 @@
 package com.logicea.cards.security;
 
+import com.logicea.cards.config.HeaderWrapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequestWrapper;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,7 +16,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.*;
 
 @RequiredArgsConstructor
 public class SecurityAuthenticationFilter extends OncePerRequestFilter {
@@ -22,7 +24,8 @@ public class SecurityAuthenticationFilter extends OncePerRequestFilter {
     private final JwtTokenProvider tokenProvider;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
+                                    FilterChain filterChain) throws IOException, ServletException {
         final String authToken = getAuthTokenFromHeader(request);
         if (authToken != null && tokenProvider.validateJwtToken(authToken)) {
             final String email = tokenProvider.getEmailFromJwtToken(authToken);
@@ -35,9 +38,13 @@ public class SecurityAuthenticationFilter extends OncePerRequestFilter {
             final UsernamePasswordAuthenticationToken authentication =
                     new UsernamePasswordAuthenticationToken(userDetails,null, userDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            request.setAttribute("x-user-id", tokenProvider.getUserIdFromToken(authToken));
-        }
-        filterChain.doFilter(request, response);
+
+            HeaderWrapper headerWrapper = new HeaderWrapper(request);
+            headerWrapper.addHeader("x-user-id", String.valueOf(tokenProvider.getUserIdFromToken(authToken)));
+            headerWrapper.addHeader("x-user-roles", String.valueOf(tokenProvider.getRolesFromToken(authToken)));
+            filterChain.doFilter(headerWrapper, response);
+        } else filterChain.doFilter(request, response);
+
     }
 
     private String getAuthTokenFromHeader(HttpServletRequest request) {

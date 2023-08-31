@@ -1,5 +1,6 @@
 package com.logicea.cards.controller;
 
+import com.logicea.cards.enums.CardStatus;
 import com.logicea.cards.model.dto.request.CardRequestDto;
 import com.logicea.cards.model.dto.request.LoginRequestDto;
 import com.logicea.cards.model.dto.response.ApiResponseDto;
@@ -15,6 +16,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
@@ -31,47 +33,62 @@ public class CardsController {
 
     @PreAuthorize("hasAuthority('MEMBER') or hasAuthority('ADMIN')")
     @PostMapping("/1.0/cards")
-    public ResponseEntity<ApiResponseDto<CardDto>> addCard(@RequestBody @Valid CardRequestDto cardRequestDto) {
-        return ResponseEntity.ok(cardsService.addCard(cardRequestDto));
+    public ResponseEntity<ApiResponseDto<CardDto>> addCard(@RequestHeader Map<String, String> headers,
+                                                           @RequestBody @Valid CardRequestDto cardRequestDto) {
+        return ResponseEntity.ok(cardsService.addCard(headers, cardRequestDto));
     }
 
     @PreAuthorize("hasAuthority('MEMBER') or hasAuthority('ADMIN')")
-    @GetMapping("/1.0/cards/{userId}")
-    public ResponseEntity<ApiResponseDto<ResponseBodyDto<List<CardDto>>>> getCards(@PathVariable Long userId,
+    @GetMapping("/1.0/cards")
+    public ResponseEntity<ApiResponseDto<ResponseBodyDto<List<CardDto>>>> getCards(@RequestHeader Map<String, String> headers,
                                                                                    @RequestParam(defaultValue = "1") int page,
                                                                                    @RequestParam(defaultValue = "5") int size,
                                                                                    @RequestParam(defaultValue = "id,asc") String[] sort) {
-        return ResponseEntity.ok(cardsService.getCards(userId, page, size, sort));
+        return ResponseEntity.ok(cardsService.getCards(headers, Long.valueOf(headers.get("x-user-id")), page, size, sort));
     }
 
     @PreAuthorize("hasAuthority('MEMBER') or hasAuthority('ADMIN')")
-    @GetMapping("/1.0/cards/{userId}/{cardId}")
-    public ResponseEntity<ApiResponseDto<CardDto>> getCard(@PathVariable Long userId,
+    @GetMapping("/1.0/cards/{cardId}")
+    public ResponseEntity<ApiResponseDto<CardDto>> getCard(@RequestHeader Map<String, String> headers,
                                                            @PathVariable Long cardId) {
-        return ResponseEntity.ok(cardsService.getCard(userId, cardId));
+        return ResponseEntity.ok(cardsService.getCard(headers, cardId));
     }
 
     @PreAuthorize("hasAuthority('MEMBER') or hasAuthority('ADMIN')")
-    @PutMapping("/1.0/cards/{userId}/{cardId}")
-    public ResponseEntity<ApiResponseDto<CardDto>> updateCard(@RequestBody @Valid CardRequestDto cardRequestDto,
-                                                              @PathVariable Long userId,
+    @PutMapping("/1.0/cards/{cardId}")
+    public ResponseEntity<ApiResponseDto<CardDto>> updateCard(@RequestHeader Map<String, String> headers,
+                                                              @RequestBody @Valid CardRequestDto cardRequestDto,
                                                               @PathVariable Long cardId) {
-        return ResponseEntity.ok(cardsService.updateCard(cardRequestDto, userId, cardId));
+        return ResponseEntity.ok(cardsService.updateCard(headers, cardRequestDto, cardId));
     }
 
     @PreAuthorize("hasAuthority('MEMBER') or hasAuthority('ADMIN')")
-    @DeleteMapping("/1.0/cards/{userId}/{cardId}")
-    public ResponseEntity<ApiResponseDto<Object>> deleteCard(@PathVariable Long userId,
+    @DeleteMapping("/1.0/cards/{cardId}")
+    public ResponseEntity<ApiResponseDto<Object>> deleteCard(@RequestHeader Map<String, String> headers,
                                                              @PathVariable Long cardId) {
-        return ResponseEntity.ok(cardsService.deleteCard(userId, cardId));
+        return ResponseEntity.ok(cardsService.deleteCard(headers, cardId));
+    }
+
+    @PreAuthorize("hasAuthority('MEMBER') or hasAuthority('ADMIN')")
+    @GetMapping("/1.0/cards/search")
+    public ResponseEntity<ApiResponseDto<ResponseBodyDto<List<CardDto>>>> searchCards(@RequestHeader Map<String, String> headers,
+                                                                                      @RequestParam(defaultValue = "1") int page,
+                                                                                      @RequestParam(defaultValue = "5") int size,
+                                                                                      @RequestParam(defaultValue = "id,asc") String[] sort,
+                                                                                      @RequestParam(required = false) String name,
+                                                                                      @RequestParam(required = false) CardStatus status,
+                                                                                      @RequestParam(required = false) String color,
+                                                                                      @RequestParam(required = false) String createdAt) {
+        return ResponseEntity.ok(cardsService.searchCards(headers, page, size, sort, name, status, color, createdAt));
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/1.0/admin/cards")
-    public ResponseEntity<ApiResponseDto<ResponseBodyDto<List<CardDto>>>> getAllCards(@RequestParam(defaultValue = "1") int page,
+    public ResponseEntity<ApiResponseDto<ResponseBodyDto<List<CardDto>>>> getAllCards(@RequestHeader Map<String, String> headers,
+                                                                                      @RequestParam(defaultValue = "1") int page,
                                                                                       @RequestParam(defaultValue = "5") int size,
                                                                                       @RequestParam(defaultValue = "id,asc") String[] sort) {
-        return ResponseEntity.ok(cardsService.getCards(null, page, size, sort));
+        return ResponseEntity.ok(cardsService.getCards(headers, null, page, size, sort));
     }
 
 }

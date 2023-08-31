@@ -17,5 +17,6 @@ public interface CardsMapper {
     @Mapping(target = "user", source = "userEntity")
     CardEntity toCardEntity(CardRequestDto cardRequestDto, UserEntity userEntity, Long cardId);
     CardDto toCardDto(CardEntity cardEntity);
+    UserEntity toUserEntity(Long id);
 
 }

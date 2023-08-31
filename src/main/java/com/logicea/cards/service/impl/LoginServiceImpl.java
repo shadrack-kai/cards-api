@@ -1,7 +1,6 @@
 package com.logicea.cards.service.impl;
 
 import com.logicea.cards.config.ConfigProperties;
-import com.logicea.cards.enums.UserRole;
 import com.logicea.cards.model.dto.request.LoginRequestDto;
 import com.logicea.cards.model.dto.response.ApiResponseDto;
 import com.logicea.cards.model.dto.response.UserDetailsDto;
@@ -13,13 +12,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -32,6 +27,8 @@ public class LoginServiceImpl implements LoginService {
     private final ConfigProperties properties;
 
     private final UsersRepository userRepository;
+
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public ApiResponseDto<UserDetailsDto> authenticateUser(final LoginRequestDto loginRequestDto) {
