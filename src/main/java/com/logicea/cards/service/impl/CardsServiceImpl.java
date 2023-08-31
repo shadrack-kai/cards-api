@@ -1,5 +1,6 @@
 package com.logicea.cards.service.impl;
 
+import com.logicea.cards.exception.CardRequestException;
 import com.logicea.cards.model.dto.request.CardRequestDto;
 import com.logicea.cards.model.dto.response.ApiResponseDto;
 import com.logicea.cards.model.dto.response.CardDto;
@@ -39,10 +40,7 @@ public class CardsServiceImpl implements CardsService {
                             .response("Success")
                             .body(cardDto)
                             .build();
-                }).orElse(ApiResponseDto.<CardDto>builder()
-                        .code("404")
-                        .response("Card could not be added. User details not found")
-                        .build());
+                }).orElseThrow(() -> new CardRequestException(404, "Card could not be added. User details not found"));
     }
 
     @Override
@@ -52,6 +50,10 @@ public class CardsServiceImpl implements CardsService {
         final List<CardDto> cards = pageCards.getContent().stream()
                 .map(CardsMapper.INSTANCE::toCardDto)
                 .toList();
+
+        if(cards.isEmpty()) {
+            throw new CardRequestException(404, "No records found");
+        }
 
         return ApiResponseDto.<ResponseBodyDto<List<CardDto>>>builder()
                 .code("200")
@@ -75,10 +77,7 @@ public class CardsServiceImpl implements CardsService {
                         .response("Success")
                         .body(cardDto)
                         .build())
-                .orElse(ApiResponseDto.<CardDto>builder()
-                        .code("404")
-                        .response("Card could not be found")
-                        .build());
+                .orElseThrow(() -> new CardRequestException(404, "Card could not be found"));
     }
 
     @Override
@@ -95,11 +94,7 @@ public class CardsServiceImpl implements CardsService {
                             .response("Success")
                             .body(cardDto)
                             .build();
-                })
-                .orElse(ApiResponseDto.<CardDto>builder()
-                        .code("404")
-                        .response("Card could not be found")
-                        .build());
+                }).orElseThrow(() -> new CardRequestException(404, "Card could not be found"));
     }
 
     private Pageable getPageable(String[] sortBy, int page, int size) {
