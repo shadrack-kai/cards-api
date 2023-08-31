@@ -1,5 +1,6 @@
 package com.logicea.cards.model.entity;
 
+import com.logicea.cards.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.OnDelete;
@@ -27,6 +28,10 @@ public class UserEntity {
 
     @Column(length = 150, nullable = false)
     private String password;
+
+    @Enumerated(EnumType.STRING)
+    @Column(length = 10)
+    private UserRole role = UserRole.MEMBER;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.RESTRICT)

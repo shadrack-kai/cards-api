@@ -13,7 +13,6 @@ public interface CardsMapper {
 
     CardsMapper INSTANCE = Mappers.getMapper(CardsMapper.class);
 
-
     @Mapping(target = "id", source = "cardId")
     @Mapping(target = "user", source = "userEntity")
     CardEntity toCardEntity(CardRequestDto cardRequestDto, UserEntity userEntity, Long cardId);

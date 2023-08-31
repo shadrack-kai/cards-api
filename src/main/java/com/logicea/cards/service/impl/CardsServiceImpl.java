@@ -20,6 +20,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.Objects.nonNull;
+
 @RequiredArgsConstructor
 @Service
 public class CardsServiceImpl implements CardsService {
@@ -46,7 +48,8 @@ public class CardsServiceImpl implements CardsService {
     @Override
     public ApiResponseDto<ResponseBodyDto<List<CardDto>>> getCards(Long userId, int page, int size, String[] sort) {
         final int currentPage = page >= 1 ? page - 1 : 0;
-        final Page<CardEntity> pageCards = cardsRepository.findByUserId(userId, getPageable(sort, currentPage, size));
+        final Page<CardEntity> pageCards = nonNull(userId) ? cardsRepository.findByUserId(userId, getPageable(sort, currentPage, size)) :
+                cardsRepository.findAll(getPageable(sort, page, size));
         final List<CardDto> cards = pageCards.getContent().stream()
                 .map(CardsMapper.INSTANCE::toCardDto)
                 .toList();
