@@ -29,13 +29,13 @@ public class CardsController {
         return ResponseEntity.ok(loginService.authenticateUser(loginRequestDto));
     }
 
-    @PreAuthorize("hasRole('MEMBER') or hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('MEMBER') or hasAuthority('ADMIN')")
     @PostMapping("/1.0/cards")
     public ResponseEntity<ApiResponseDto<CardDto>> addCard(@RequestBody @Valid CardRequestDto cardRequestDto) {
         return ResponseEntity.ok(cardsService.addCard(cardRequestDto));
     }
 
-    @PreAuthorize("hasRole('MEMBER') or hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('MEMBER') or hasAuthority('ADMIN')")
     @GetMapping("/1.0/cards/{userId}")
     public ResponseEntity<ApiResponseDto<ResponseBodyDto<List<CardDto>>>> getCards(@PathVariable Long userId,
                                                                                    @RequestParam(defaultValue = "1") int page,
@@ -44,14 +44,14 @@ public class CardsController {
         return ResponseEntity.ok(cardsService.getCards(userId, page, size, sort));
     }
 
-    @PreAuthorize("hasRole('MEMBER') or hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('MEMBER') or hasAuthority('ADMIN')")
     @GetMapping("/1.0/cards/{userId}/{cardId}")
     public ResponseEntity<ApiResponseDto<CardDto>> getCard(@PathVariable Long userId,
                                                            @PathVariable Long cardId) {
         return ResponseEntity.ok(cardsService.getCard(userId, cardId));
     }
 
-    @PreAuthorize("hasRole('MEMBER') or hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('MEMBER') or hasAuthority('ADMIN')")
     @PutMapping("/1.0/cards/{userId}/{cardId}")
     public ResponseEntity<ApiResponseDto<CardDto>> updateCard(@RequestBody @Valid CardRequestDto cardRequestDto,
                                                               @PathVariable Long userId,
@@ -59,15 +59,15 @@ public class CardsController {
         return ResponseEntity.ok(cardsService.updateCard(cardRequestDto, userId, cardId));
     }
 
-    @PreAuthorize("hasRole('MEMBER') or hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('MEMBER') or hasAuthority('ADMIN')")
     @DeleteMapping("/1.0/cards/{userId}/{cardId}")
     public ResponseEntity<ApiResponseDto<Object>> deleteCard(@PathVariable Long userId,
                                                              @PathVariable Long cardId) {
         return ResponseEntity.ok(cardsService.deleteCard(userId, cardId));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/1.0/cards")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetMapping("/1.0/admin/cards")
     public ResponseEntity<ApiResponseDto<ResponseBodyDto<List<CardDto>>>> getAllCards(@RequestParam(defaultValue = "1") int page,
                                                                                       @RequestParam(defaultValue = "5") int size,
                                                                                       @RequestParam(defaultValue = "id,asc") String[] sort) {

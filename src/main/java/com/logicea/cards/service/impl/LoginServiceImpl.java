@@ -5,6 +5,8 @@ import com.logicea.cards.enums.UserRole;
 import com.logicea.cards.model.dto.request.LoginRequestDto;
 import com.logicea.cards.model.dto.response.ApiResponseDto;
 import com.logicea.cards.model.dto.response.UserDetailsDto;
+import com.logicea.cards.model.entity.UserEntity;
+import com.logicea.cards.repository.UsersRepository;
 import com.logicea.cards.security.JwtTokenProvider;
 import com.logicea.cards.service.LoginService;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -27,13 +31,16 @@ public class LoginServiceImpl implements LoginService {
 
     private final ConfigProperties properties;
 
+    private final UsersRepository userRepository;
+
     @Override
     public ApiResponseDto<UserDetailsDto> authenticateUser(final LoginRequestDto loginRequestDto) {
         final Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequestDto
-                .getEmail(), loginRequestDto.getPassword(), Collections.singletonList(new SimpleGrantedAuthority(UserRole.MEMBER.toString()))));
+                .getEmail(), loginRequestDto.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        final String accessToken = tokenProvider.generateToken(authentication);
+        final UserEntity userEntity = userRepository.findByEmail(loginRequestDto.getEmail()).orElse(new UserEntity());
+        final String accessToken = tokenProvider.generateToken(authentication, userEntity.getId());
 
         return ApiResponseDto.<UserDetailsDto>builder()
                 .code("200")

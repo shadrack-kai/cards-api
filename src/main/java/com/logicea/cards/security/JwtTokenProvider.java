@@ -2,16 +2,18 @@ package com.logicea.cards.security;
 
 import com.logicea.cards.config.ConfigProperties;
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -20,9 +22,10 @@ public class JwtTokenProvider {
 
     private final ConfigProperties properties;
 
-    public String generateToken(Authentication authentication) {
+    public String generateToken(final Authentication authentication, final Long userId) {
         final User userPrincipal = (User) authentication.getPrincipal();
         return Jwts.builder()
+                .setClaims(Map.of("role", authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList(), "id", userId))
                 .setSubject((userPrincipal.getUsername()))
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + (properties.getValidityPeriod() * 1000L)))
@@ -30,8 +33,12 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public String getUserIdFromToken(String token) {
-        return (String)getClaimsFromJwtToken(token).get("id");
+    public Integer getUserIdFromToken(String token) {
+        return (Integer) getClaimsFromJwtToken(token).get("id");
+    }
+
+    public List<String> getRolesFromToken(String token) {
+        return (List<String>) getClaimsFromJwtToken(token).get("role");
     }
 
     public String getEmailFromJwtToken(String token) {
