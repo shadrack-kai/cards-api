@@ -34,7 +34,7 @@ public class CardsController {
 
     @GetMapping("/1.0/cards/{userId}/{cardId}")
     public ResponseEntity<ApiResponseDto<CardDto>> getCard(@PathVariable Long userId,
-                                                                                  @PathVariable Long cardId) {
+                                                           @PathVariable Long cardId) {
         return ResponseEntity.ok(cardsService.getCard(userId, cardId));
     }
 
@@ -43,6 +43,12 @@ public class CardsController {
                                                               @PathVariable Long userId,
                                                               @PathVariable Long cardId) {
         return ResponseEntity.ok(cardsService.updateCard(cardRequestDto, userId, cardId));
+    }
+
+    @DeleteMapping("/1.0/cards/{userId}/{cardId}")
+    public ResponseEntity<ApiResponseDto<Object>> deleteCard(@PathVariable Long userId,
+                                                             @PathVariable Long cardId) {
+        return ResponseEntity.ok(cardsService.deleteCard(userId, cardId));
     }
 
 }

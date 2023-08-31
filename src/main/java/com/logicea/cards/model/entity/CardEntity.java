@@ -39,6 +39,7 @@ public class CardEntity {
     private UserEntity user;
 
     @Enumerated(EnumType.STRING)
-    private CardStatus status;
+    @Column(length = 15)
+    private CardStatus status = CardStatus.TODO;
 
 }

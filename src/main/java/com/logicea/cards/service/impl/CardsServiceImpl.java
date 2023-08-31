@@ -86,8 +86,8 @@ public class CardsServiceImpl implements CardsService {
                 .flatMap(existingCardEntity -> usersRepository.findById(userId))
                 .map(userEntity -> {
                     final CardEntity cardEntity = CardsMapper.INSTANCE.toCardEntity(cardRequestDto, userEntity, cardId);
-                    final CardEntity newCardEntity = cardsRepository.save(cardEntity);
-                    final CardDto cardDto = CardsMapper.INSTANCE.toCardDto(newCardEntity);
+                    final CardEntity updatedCardEntity = cardsRepository.save(cardEntity);
+                    final CardDto cardDto = CardsMapper.INSTANCE.toCardDto(updatedCardEntity);
 
                     return ApiResponseDto.<CardDto>builder()
                             .code("200")
@@ -95,6 +95,18 @@ public class CardsServiceImpl implements CardsService {
                             .body(cardDto)
                             .build();
                 }).orElseThrow(() -> new CardRequestException(404, "Card could not be found"));
+    }
+
+    @Override
+    public ApiResponseDto<Object> deleteCard(Long userId, Long cardId) {
+        return cardsRepository.findByUserIdAndId(userId, cardId)
+                .map(cardEntity -> {
+                    cardsRepository.delete(cardEntity);
+                    return ApiResponseDto.builder()
+                            .code("200")
+                            .response("Success")
+                            .build();
+                }).orElseThrow(() -> new CardRequestException(404, "Delete failed, card could not be found"));
     }
 
     private Pageable getPageable(String[] sortBy, int page, int size) {

@@ -1,5 +1,6 @@
 package com.logicea.cards.model.dto.request;
 
+import com.logicea.cards.enums.CardStatus;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
@@ -16,5 +17,7 @@ public class CardRequestDto {
     private String description;
 
     private Long userId;
+
+    private CardStatus status = CardStatus.TODO;
 
 }

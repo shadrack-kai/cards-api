@@ -1,5 +1,6 @@
 package com.logicea.cards.model.dto.response;
 
+import com.logicea.cards.enums.CardStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,6 +18,7 @@ public class CardDto {
     private String name;
     private String color;
     private String description;
+    private CardStatus status;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 

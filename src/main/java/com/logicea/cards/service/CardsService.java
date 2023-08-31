@@ -16,4 +16,6 @@ public interface CardsService {
     ApiResponseDto<CardDto> getCard(Long userId, Long cardId);
 
     ApiResponseDto<CardDto> updateCard(CardRequestDto cardRequestDto, Long userId, Long cardId);
+
+    ApiResponseDto<Object> deleteCard(Long userId, Long cardId);
 }
