@@ -13,7 +13,7 @@ import java.util.List;
 public class OpenAPIConfig {
 
     @Bean
-    public OpenAPI myOpenAPI() {
+    public OpenAPI openAPI() {
 
         Server devServer = new Server();
         devServer.setUrl("http://localhost:8080");
@@ -26,7 +26,7 @@ public class OpenAPIConfig {
 
         Info info = new Info()
                 .title("Manage Cards API")
-                .version("1.0")
+                .version("1.0.0")
                 .contact(contact)
                 .description("This API exposes endpoints to manage task cards").termsOfService("https://github.com/shadrack-kai/cards-api");
 

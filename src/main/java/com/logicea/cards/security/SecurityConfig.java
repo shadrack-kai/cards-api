@@ -55,9 +55,7 @@ public class SecurityConfig {
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(authenticationEntryPoint))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/api/1.0/login/**", "/actuator/**",
-                        "/csrf", "/v2/api-docs" , "/v3/api-docs", "/swagger-resources/configuration/ui",
-                        "/configuration/ui", "/swagger-resources", "/swagger-resources/configuration/security",
-                        "/configuration/security", "/swagger-ui.html", "/webjars/**").permitAll().anyRequest().authenticated())
+                        "/csrf", "/v3/api-docs/**", "/swagger-ui/**").permitAll().anyRequest().authenticated())
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(securityAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .build();
