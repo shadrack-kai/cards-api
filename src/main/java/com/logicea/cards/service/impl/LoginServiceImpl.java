@@ -13,7 +13,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -27,8 +26,6 @@ public class LoginServiceImpl implements LoginService {
     private final ConfigProperties properties;
 
     private final UsersRepository userRepository;
-
-    private final PasswordEncoder passwordEncoder;
 
     @Override
     public ApiResponseDto<UserDetailsDto> authenticateUser(final LoginRequestDto loginRequestDto) {

@@ -4,6 +4,7 @@ import com.logicea.cards.model.dto.response.ApiResponseDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -28,8 +29,14 @@ public class CustomExceptionHandler {
         return getApiResponse(405, ex.getMessage(), HttpStatus.valueOf(405));
     }
 
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ApiResponseDto<Object>> handleBadCredentialsException(BadCredentialsException ex) {
+        return getApiResponse(401, ex.getMessage(), HttpStatus.valueOf(401));
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponseDto<Object>> handleAllExceptions(Exception ex) {
+        ex.printStackTrace();
         return getApiResponse(500, ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
