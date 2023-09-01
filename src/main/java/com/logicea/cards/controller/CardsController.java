@@ -9,6 +9,10 @@ import com.logicea.cards.model.dto.response.ResponseBodyDto;
 import com.logicea.cards.model.dto.response.UserDetailsDto;
 import com.logicea.cards.service.CardsService;
 import com.logicea.cards.service.LoginService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,19 +22,22 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
+@Tag(name = "Cards Controller", description = "Api to manage Cards")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api")
 public class CardsController {
 
     private final CardsService cardsService;
-    private final LoginService loginService;
 
-    @PostMapping("/1.0/login")
-    public ResponseEntity<ApiResponseDto<UserDetailsDto>> authenticateUser(@RequestBody @Valid LoginRequestDto loginRequestDto) {
-        return ResponseEntity.ok(loginService.authenticateUser(loginRequestDto));
-    }
-
+    @Operation(
+            summary = "Add Cards",
+            description = "Endpoint for adding more cards")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Login Successful"),
+            @ApiResponse(responseCode = "400", description = "Bad Request"),
+            @ApiResponse(responseCode = "401", description = "Invalid Credentials")
+    })
     @PreAuthorize("hasAuthority('MEMBER') or hasAuthority('ADMIN')")
     @PostMapping("/1.0/cards")
     public ResponseEntity<ApiResponseDto<CardDto>> addCard(@RequestHeader Map<String, String> headers,
@@ -38,6 +45,14 @@ public class CardsController {
         return ResponseEntity.ok(cardsService.addCard(headers, cardRequestDto));
     }
 
+    @Operation(
+            summary = "Fetch Cards",
+            description = "Endpoint for fetching cards")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Login Successful"),
+            @ApiResponse(responseCode = "400", description = "Bad Request"),
+            @ApiResponse(responseCode = "401", description = "Invalid Credentials")
+    })
     @PreAuthorize("hasAuthority('MEMBER') or hasAuthority('ADMIN')")
     @GetMapping("/1.0/cards")
     public ResponseEntity<ApiResponseDto<ResponseBodyDto<List<CardDto>>>> getCards(@RequestHeader Map<String, String> headers,
@@ -47,6 +62,14 @@ public class CardsController {
         return ResponseEntity.ok(cardsService.getCards(headers, Long.valueOf(headers.get("x-user-id")), page, size, sort));
     }
 
+    @Operation(
+            summary = "Get Single Card",
+            description = "Endpoint for fetching a single card")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Login Successful"),
+            @ApiResponse(responseCode = "400", description = "Bad Request"),
+            @ApiResponse(responseCode = "401", description = "Invalid Credentials")
+    })
     @PreAuthorize("hasAuthority('MEMBER') or hasAuthority('ADMIN')")
     @GetMapping("/1.0/cards/{cardId}")
     public ResponseEntity<ApiResponseDto<CardDto>> getCard(@RequestHeader Map<String, String> headers,
@@ -54,6 +77,14 @@ public class CardsController {
         return ResponseEntity.ok(cardsService.getCard(headers, cardId));
     }
 
+    @Operation(
+            summary = "Updated Card",
+            description = "Endpoint for updating cards")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Login Successful"),
+            @ApiResponse(responseCode = "400", description = "Bad Request"),
+            @ApiResponse(responseCode = "401", description = "Invalid Credentials")
+    })
     @PreAuthorize("hasAuthority('MEMBER') or hasAuthority('ADMIN')")
     @PutMapping("/1.0/cards/{cardId}")
     public ResponseEntity<ApiResponseDto<CardDto>> updateCard(@RequestHeader Map<String, String> headers,
@@ -62,6 +93,14 @@ public class CardsController {
         return ResponseEntity.ok(cardsService.updateCard(headers, cardRequestDto, cardId));
     }
 
+    @Operation(
+            summary = "Delete Card",
+            description = "Endpoint for deleting cards")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Login Successful"),
+            @ApiResponse(responseCode = "400", description = "Bad Request"),
+            @ApiResponse(responseCode = "401", description = "Invalid Credentials")
+    })
     @PreAuthorize("hasAuthority('MEMBER') or hasAuthority('ADMIN')")
     @DeleteMapping("/1.0/cards/{cardId}")
     public ResponseEntity<ApiResponseDto<Object>> deleteCard(@RequestHeader Map<String, String> headers,
@@ -69,6 +108,14 @@ public class CardsController {
         return ResponseEntity.ok(cardsService.deleteCard(headers, cardId));
     }
 
+    @Operation(
+            summary = "Search Cards",
+            description = "Endpoint for search for a card")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Login Successful"),
+            @ApiResponse(responseCode = "400", description = "Bad Request"),
+            @ApiResponse(responseCode = "401", description = "Invalid Credentials")
+    })
     @PreAuthorize("hasAuthority('MEMBER') or hasAuthority('ADMIN')")
     @GetMapping("/1.0/cards/search")
     public ResponseEntity<ApiResponseDto<ResponseBodyDto<List<CardDto>>>> searchCards(@RequestHeader Map<String, String> headers,
@@ -82,6 +129,14 @@ public class CardsController {
         return ResponseEntity.ok(cardsService.searchCards(headers, page, size, sort, name, status, color, createdAt));
     }
 
+    @Operation(
+            summary = "Fetch All Cards",
+            description = "Endpoint for fetching all cards")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Login Successful"),
+            @ApiResponse(responseCode = "400", description = "Bad Request"),
+            @ApiResponse(responseCode = "401", description = "Invalid Credentials")
+    })
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/1.0/admin/cards")
     public ResponseEntity<ApiResponseDto<ResponseBodyDto<List<CardDto>>>> getAllCards(@RequestHeader Map<String, String> headers,

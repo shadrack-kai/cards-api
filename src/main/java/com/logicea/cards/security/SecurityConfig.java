@@ -54,7 +54,10 @@ public class SecurityConfig {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(authenticationEntryPoint))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/1.0/login/**").permitAll().anyRequest().authenticated())
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/1.0/login/**", "/actuator/**",
+                        "/csrf", "/v2/api-docs" , "/v3/api-docs", "/swagger-resources/configuration/ui",
+                        "/configuration/ui", "/swagger-resources", "/swagger-resources/configuration/security",
+                        "/configuration/security", "/swagger-ui.html", "/webjars/**").permitAll().anyRequest().authenticated())
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(securityAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .build();
