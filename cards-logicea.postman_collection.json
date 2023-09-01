@@ -1,0 +1,258 @@
+{
+	"info": {
+		"_postman_id": "c9a0bd85-671f-4178-ac1f-1b153d292f07",
+		"name": "cards-logicea",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "add-card",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwicm9sZSI6WyJNRU1CRVIiXSwic3ViIjoibWVtYmVyQHRlc3QuY29tIiwiaWF0IjoxNjkzNTAwMzM5LCJleHAiOjE2OTM1MDM5Mzl9.PWZIbPPna-ztMwV-mn8zTHHAMTSx25rViWVTBt45mZyLg6ugfs2AqipRr1FvzrLwW95DJX63amdA6cNlH5FYBQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Card D\",\r\n    \"color\": \"#000000\",\r\n    \"description\": \"Test description\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/1.0/cards",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"1.0",
+						"cards"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update-card",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "5aky53c885c10e",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "jKfv9w4e3e",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Card 3\",\r\n    \"color\": \"#000000\",\r\n    \"description\": \"Test description\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/1.0/cards/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"1.0",
+						"cards",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-cards",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwicm9sZSI6WyJNRU1CRVIiXSwic3ViIjoibWVtYmVyQHRlc3QuY29tIiwiaWF0IjoxNjkzNTAwMzM5LCJleHAiOjE2OTM1MDM5Mzl9.PWZIbPPna-ztMwV-mn8zTHHAMTSx25rViWVTBt45mZyLg6ugfs2AqipRr1FvzrLwW95DJX63amdA6cNlH5FYBQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/1.0/cards",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"1.0",
+						"cards"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-card",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJpZCI6Miwicm9sZSI6WyJBRE1JTiJdLCJzdWIiOiJhZG1pbkB0ZXN0LmNvbSIsImlhdCI6MTY5MzUyNDA3MywiZXhwIjoxNjkzNTI3NjczfQ.nA7nKdHsLFmx5yZEIS2djh-3d_x6HqW2PwSLUmJVa7AhdeswgAeqapEzHJpGvczZlSaGhTQI1q-_iYGA2f7WQw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/1.0/cards/8",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"1.0",
+						"cards",
+						"8"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "search-cards",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwicm9sZSI6WyJNRU1CRVIiXSwic3ViIjoibWVtYmVyQHRlc3QuY29tIiwiaWF0IjoxNjkzNTI0NzgwLCJleHAiOjE2OTM1MjgzODB9.Re0hqa_ut143I9J1XEw-mCFRnk2MAyPSNpNdE0teJjlCRvSX1opMLnBWQMmtv-Ta_dW7fNEblDJfhISVarFb4g",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/1.0/cards/search?name=Card 3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"1.0",
+						"cards",
+						"search"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Card 3"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-cards-admin",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwicm9sZSI6WyJNRU1CRVIiXSwic3ViIjoibWVtYmVyQHRlc3QuY29tIiwiaWF0IjoxNjkzNTAwMzM5LCJleHAiOjE2OTM1MDM5Mzl9.PWZIbPPna-ztMwV-mn8zTHHAMTSx25rViWVTBt45mZyLg6ugfs2AqipRr1FvzrLwW95DJX63amdA6cNlH5FYBQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/1.0/admin/cards",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"1.0",
+						"admin",
+						"cards"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"member@test.com\",\r\n    \"password\": \"Test!123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/1.0/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"1.0",
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
